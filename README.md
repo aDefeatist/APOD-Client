@@ -1,1 +1,1 @@
-api link: https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE
+secret :)

@@ -1,10 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './App.css';
-import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl'
 import InputLabel from '@material-ui/core/InputLabel'
 import Input from '@material-ui/core/Input'
@@ -47,22 +44,11 @@ class App extends React.Component {
     });
   }
 
-  async onDayChange(e) {
-    let day = e.target.value
-    await this.setState({ day: day })
-    console.log('State.day = ' + this.state.day)
-  }
-
-  async onMonthChange(e) {
-    let month = e.target.value
-    await this.setState({ month: month })
-    console.log('State.month = ' + this.state.month)
-  }
-
-  async onYearChange(e) {
-    let year = e.target.value
-    await this.setState({ year: year })
-    console.log('State.year = ' + this.state.year)
+  // function currying
+  onChange = field => e => {
+    this.setState({
+      [field]: e.target.value
+    })
   }
 
   async onClick(e) {
@@ -83,6 +69,7 @@ class App extends React.Component {
         .then((responseData) => { 
           console.log(responseData);
           this.setState({ 
+            title: responseData.title,
             explanation: responseData.explanation,
             imgurl: responseData.url 
           })
@@ -93,7 +80,7 @@ class App extends React.Component {
             explanation: `NASA's Astronamy Picture of the Day (APOD) launched June 16 1995. Please make sure your date entry falls after this date`
           })
         })
-      } else if (this.state.year == 1995 && this.state.month > 6) {
+      } else if (this.state.year === 1995 && this.state.month > 6) {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE&date=${this.state.date}`)
         .then((response) => response.json()) 
         .then((responseData) => { 
@@ -109,7 +96,7 @@ class App extends React.Component {
             explanation: `NASA's Astronamy Picture of the Day (APOD) launched June 16 1995. Please make sure your date entry falls after this date`
           })
         })
-      } else if (this.state.year == 1995 && this.state.month == 6 && this.state.day >= 16) {
+      } else if (this.state.year === '1995' && this.state.month === '6' && this.state.day >= 16) {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE&date=${this.state.date}`)
         .then((response) => response.json()) 
         .then((responseData) => { 
@@ -143,21 +130,21 @@ class App extends React.Component {
               <Grid item md className="FormItem">
               <FormControl>
                 <InputLabel htmlFor="my-input">Day</InputLabel>
-                <Input onChange={this.onDayChange.bind(this)} id="my-input" aria-describedby="my-helper-text" />
+                <Input type="number" onChange={this.onChange('day')} id="my-input" aria-describedby="my-helper-text" />
                 <FormHelperText id="my-helper-text">DD</FormHelperText>
               </FormControl>
               </Grid>
               <Grid item md className="FormItem">
               <FormControl>
                 <InputLabel htmlFor="my-input">Month</InputLabel>
-                <Input onChange={this.onMonthChange.bind(this)} id="my-input" aria-describedby="my-helper-text" />
+                <Input type="number" onChange={this.onChange('month')} id="my-input" aria-describedby="my-helper-text" />
                 <FormHelperText id="my-helper-text">MM</FormHelperText>
               </FormControl>
               </Grid>
               <Grid item md className="FormItem">
               <FormControl>
                 <InputLabel htmlFor="my-input">Year</InputLabel>
-                <Input onChange={this.onYearChange.bind(this)} id="my-input" aria-describedby="my-helper-text" />
+                <Input type="number" onChange={this.onChange('year')} id="my-input" aria-describedby="my-helper-text" />
                 <FormHelperText id="my-helper-text">YYYY</FormHelperText>
               </FormControl>
               </Grid>
@@ -171,7 +158,7 @@ class App extends React.Component {
           <Paper style={{ width: '100%', margin: 'auto', marginTop: '2rem', background: '#222222' }}>
             <Grid container>
               <Grid style={{ margin: '2rem' }} item md>
-                <img src={this.state.imgurl} style={{ maxWidth: '500px' }} />
+                <img alt="nasa_image_of_the_day" src={this.state.imgurl} style={{ maxWidth: '500px' }} />
               </Grid>
               <Grid style={{ margin: '2rem' }} item md>
                 <h2 style={{ color: 'white', fontWeight: 'bold' }} >{this.state.title}</h2>

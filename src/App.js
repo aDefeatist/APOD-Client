@@ -9,10 +9,6 @@ import FormHelperText from '@material-ui/core/FormHelperText'
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button'
 
-
-
-
-
 class App extends React.Component {
   constructor() {
 		super()
@@ -26,10 +22,6 @@ class App extends React.Component {
       title: '',
     }
   }
-
-
-
-
 
   componentDidMount() {
     fetch('https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE')
@@ -49,6 +41,26 @@ class App extends React.Component {
     this.setState({
       [field]: e.target.value
     })
+    console.log(this.state.day)
+  }
+
+  fetchData() {
+    fetch(`https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE&date=${this.state.date}`)
+        .then((response) => response.json()) 
+        .then((responseData) => { 
+          console.log(responseData);
+          this.setState({ 
+            title: responseData.title,
+            explanation: responseData.explanation,
+            imgurl: responseData.url 
+          })
+        })
+        .catch(err => {
+          this.setState({
+            title: 'ERROR',
+            explanation: `NASA's Astronamy Picture of the Day (APOD) launched June 16 1995. Please make sure your date entry falls after this date`
+          })
+        })
   }
 
   async onClick(e) {
@@ -86,6 +98,7 @@ class App extends React.Component {
         .then((responseData) => { 
           console.log(responseData);
           this.setState({ 
+            title: responseData.title,
             explanation: responseData.explanation,
             imgurl: responseData.url 
           })
@@ -96,12 +109,13 @@ class App extends React.Component {
             explanation: `NASA's Astronamy Picture of the Day (APOD) launched June 16 1995. Please make sure your date entry falls after this date`
           })
         })
-      } else if (this.state.year === '1995' && this.state.month === '6' && this.state.day >= 16) {
+      } else if (this.state.year == 1995 && this.state.month == 6 && this.state.day >= 16) {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE&date=${this.state.date}`)
         .then((response) => response.json()) 
         .then((responseData) => { 
           console.log(responseData);
           this.setState({ 
+            title: responseData.title,
             explanation: responseData.explanation,
             imgurl: responseData.url 
           })
@@ -156,8 +170,8 @@ class App extends React.Component {
           </Grid>
         </Paper>
           <Paper style={{ width: '100%', margin: 'auto', marginTop: '2rem', background: '#222222' }}>
-            <Grid container>
-              <Grid style={{ margin: '2rem' }} item md>
+            <Grid container spacing={0} direction="row" alignItems="center" justify="center" >
+              <Grid style={{ margin: '2rem'}} item md>
                 <img alt="nasa_image_of_the_day" src={this.state.imgurl} style={{ maxWidth: '500px' }} />
               </Grid>
               <Grid style={{ margin: '2rem' }} item md>

@@ -27,7 +27,6 @@ class App extends React.Component {
     fetch('https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE')
     .then((response) => response.json()) 
     .then((responseData) => { 
-       console.log(responseData);
         this.setState({ 
           explanation: responseData.explanation,
           imgurl: responseData.url,
@@ -41,14 +40,12 @@ class App extends React.Component {
     this.setState({
       [field]: e.target.value
     })
-    console.log(this.state.day)
   }
 
   fetchData() {
     fetch(`https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE&date=${this.state.date}`)
         .then((response) => response.json()) 
         .then((responseData) => { 
-          console.log(responseData);
           this.setState({ 
             title: responseData.title,
             explanation: responseData.explanation,
@@ -68,7 +65,6 @@ class App extends React.Component {
     await this.setState({
       date: `${this.state.year}-${this.state.month}-${this.state.day}`
     })
-    console.log(this.state.date)
     if (
       this.state.year.length !== 4 
       && this.state.month.length !== 2 
@@ -79,7 +75,6 @@ class App extends React.Component {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE&date=${this.state.date}`)
         .then((response) => response.json()) 
         .then((responseData) => { 
-          console.log(responseData);
           this.setState({ 
             title: responseData.title,
             explanation: responseData.explanation,
@@ -96,7 +91,6 @@ class App extends React.Component {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE&date=${this.state.date}`)
         .then((response) => response.json()) 
         .then((responseData) => { 
-          console.log(responseData);
           this.setState({ 
             title: responseData.title,
             explanation: responseData.explanation,
@@ -113,7 +107,6 @@ class App extends React.Component {
         fetch(`https://api.nasa.gov/planetary/apod?api_key=XwKI21F7dNGNhG5VDvBsLIjiVbaQFGhUwSfSZRVE&date=${this.state.date}`)
         .then((response) => response.json()) 
         .then((responseData) => { 
-          console.log(responseData);
           this.setState({ 
             title: responseData.title,
             explanation: responseData.explanation,
@@ -172,7 +165,9 @@ class App extends React.Component {
           <Paper style={{ width: '100%', margin: 'auto', marginTop: '2rem', background: '#222222' }}>
             <Grid container spacing={0} direction="row" alignItems="center" justify="center" >
               <Grid style={{ margin: '2rem'}} item md>
-                <img alt="nasa_image_of_the_day" src={this.state.imgurl} style={{ maxWidth: '500px' }} />
+                <a href={this.state.imgurl} target="blank">
+                  <img alt="nasa_image_of_the_day" src={this.state.imgurl} style={{ maxWidth: '800px' }} />
+                </a>              
               </Grid>
               <Grid style={{ margin: '2rem' }} item md>
                 <h2 style={{ color: 'white', fontWeight: 'bold' }} >{this.state.title}</h2>
